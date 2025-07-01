@@ -60,9 +60,7 @@
 <div class="news-container" id="news"></div>
 
 <script>
-  const url = 'https://newsapi.org/v2/top-headlines?' +
-          'sources=bbc-news&' +
-          'apiKey=8d7e089a7d0b4489ad3d71492eb152cb';
+  const url = 'https://newsdata.io/api/1/latest?apikey=pub_630d74ccec8e4037af1fdc89da319737&q=healthcare';
 
   fetch(url)
     .then(response => response.json())
@@ -70,19 +68,19 @@
       const newsContainer = document.getElementById('news');
       newsContainer.innerHTML = '';
 
-      // if (data.status !== 'ok' || !data.articles.length) {
-      //   newsContainer.innerHTML = '<p>No news found.</p>';
-      //   return;
-      // }
+      if (!data.results || !data.results.length) {
+        newsContainer.innerHTML = '<p>No news found.</p>';
+        return;
+      }
 
-      data.articles.forEach(article => {
+      data.results.forEach(article => {
         const item = document.createElement('div');
         item.classList.add('news-item');
 
         item.innerHTML = `
           <h3>${article.title}</h3>
           <p>${article.description || 'No description available.'}</p>
-          <a href="${article.url}" target="_blank">Read More</a>
+          <a href="${article.link}" target="_blank">Read More</a>
         `;
         newsContainer.appendChild(item);
       });
